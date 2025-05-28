@@ -1,0 +1,106 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API de adopción de mascotas",
+      "version": "1.0.0",
+      "description": "Documentación de la API de la sección de gestión de usuarios"
+    },
+    "paths": {
+      "/api/users": {
+        "get": {
+          "summary": "Obtener todos los usuarios",
+          "tags": ["Users"],
+          "responses": {
+            "200": {
+              "description": "Lista de usuarios"
+            }
+          }
+        }
+      },
+      "/api/users/{uid}": {
+        "get": {
+          "summary": "Obtener un usuario por ID",
+          "tags": ["Users"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "uid",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID del usuario"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Usuario encontrado"
+            },
+            "404": {
+              "description": "Usuario no encontrado"
+            }
+          }
+        },
+        "put": {
+          "summary": "Actualizar un usuario por ID",
+          "tags": ["Users"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "uid",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID del usuario"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "first_name": { "type": "string" },
+                    "last_name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "role": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuario actualizado"
+            },
+            "404": {
+              "description": "Usuario no encontrado"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar un usuario por ID",
+          "tags": ["Users"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "uid",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID del usuario"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Usuario eliminado"
+            }
+          }
+        }
+      }
+    }
+  }
+  
