@@ -1,0 +1,198 @@
+paths:
+  /api/users/:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Obtencion de usuarios exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Estado de la respuesta"
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/User'
+        "404":
+          description: Obtencion de usuarios erronea
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error404"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error500"
+    # post:
+    #   summary: Graba un usuario
+    #   tags:
+    #     - Users
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#components/requestBodies/createUser'
+    #   responses:
+    #     "201":
+    #       description: Usuario creado
+    #     "400":
+    #       description: Faltan datos          
+    #     "500":
+    #       description: Error interno del servidor
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un usuario de la base de datos
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: ID del usuario solicitado
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: Obtencion de usuario exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/getUser'
+        "400":
+          description: Error al obtener al usuario
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error400"
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error404"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error500"
+    # post:
+    #     "500":
+    #       description: Error interno del servidor
+    put:
+      summary: Modifica un usuario
+      tags: 
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario solicitado
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name: 
+                  type: string
+                  example: Nacho
+                last_name:
+                  type: string
+                  example: Pascal
+                role: 
+                  type: string
+                  example: user
+      responses: 
+        "204":
+          description: Edicion de recurso exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User update
+        "400":
+          description: Parametros incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error400"
+        "404":
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error404"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error500"
+    delete:
+      summary: Eliminar un usuario
+      tags: 
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: ID del usuario a eliminar
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Recurso eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: user deleted
+        "400":
+          description: Parametros incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error400"
+        "404":
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error404"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error500"

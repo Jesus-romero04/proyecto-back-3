@@ -17,7 +17,7 @@ export default class GenericRepository {
     }
 
     update = (id,doc) =>{
-        return this.dao.update(id,doc);
+        return this.dao.update(id,doc, {new: true});
     }
 
     delete = (id) =>{

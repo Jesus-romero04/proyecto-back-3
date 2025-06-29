@@ -1,0 +1,172 @@
+components:
+  schemas: 
+    User: 
+      type: object
+      properties: 
+        _id: 
+          type: ObjectId
+          description: id autogenerado por MongoDB
+        first_name: 
+          type: string,
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email: 
+          type: string
+          description: Correo electronico del usuario
+        password: 
+          type: string
+          description: Contraseña determinada por el usuario
+        role:
+          type: string
+          description: Rol del usuario
+        pets:
+          type: array
+      example:
+        _id: ObjectId(´684496c62e77147fd16409b8´)
+        first_name: Ignacio
+        last_name: Brizuela
+        email: brinacho@hotmail.como
+        password: coder123
+    Pet:
+      type: object
+      properties: 
+        _id: 
+          type: ObjectId
+          description: id autogenerado por MongoDB
+        name: 
+          type: string,
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Raza de la mascota
+        birthDate: 
+          type: string
+          description: 2024-01-13
+        adopted: 
+          type: booleam
+          description: Estado de adopcion
+        image:
+          type: string
+          description: archivo de imagen
+        __v: 
+          type: number
+          description: verison determinada por MongoDB
+      example:
+        _id: ObjectId(´684496c62e77147fd16409b8´)
+        name: Ipa
+        specie: Collie
+        birthDate: 2024-01-13
+        adopted: false
+        image: archivo
+        __v: 0
+    Adoption:
+      type: object
+      properties:
+        owner:
+          $ref: "#components/schemas/User"
+        pet:
+          $ref: "#components/schemas/Pet"
+    error500:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Error interno del servidor
+        payload:
+          type: string
+          example: stack error || Error interno del servidor
+    error400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        errorName:
+          type: string
+          example: INVALID_PARAMS
+        message:
+          type: string
+          example: Mensaje del error
+    error404:
+      type: object 
+      properties: 
+        status:
+          type: string
+          example: error
+        errorName:
+          type: string
+          example: NOT_FOUND
+        message:
+          type: string
+          example: Mensaje del error
+  requestBodies:
+    createUser:
+      type: object
+      properties:
+        first_name: 
+          type: string,
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email: 
+          type: string
+          description: Correo electronico del usuario
+        password: 
+          type: string
+          description: Contraseña determinada por el usuario
+      example:
+        first_name: Ignacio
+        last_name: Brizuela
+        email: brinacho@hotmail.como
+        password: coder123
+    createPet:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Raza de la mascota
+        birthDate:
+          type: string
+          description: Fecha de naciomiento de la mascota
+      example:
+        name: Ipa
+        specie: Collie
+        birthDate: AAAA-MM-DD
+    getUser:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Estado de la respuesta
+        payload:
+          type: object
+          properties:
+            _id: 
+              type: string
+              example: 6844c5e36bafa2591a8db3d5
+            first_name: 
+              type: string
+              example: Pedro
+            last_name:
+              type: string
+              example: Saenz
+            email:
+              type: string
+              example: Pedro@gmail.com
+            password: 
+              type: string
+              example: $2b$10$4R1t/T1JUssHqFPpD8b5reoCuToPU4H0osdaPmoV.SLnKtA2ElKaK
+            role: 
+              type: string
+              example: user
+            pet: 
+              type: array

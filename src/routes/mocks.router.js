@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { createMockingUsers, createMockingPets } from "../controllers/mocks.controller.js";
-import { createDataOnDatabase } from "../controllers/mocks.controller.js";
+import mockingController from "../controllers/mocks.controller.js"
 
-const router = Router();
+const mocksRouter = Router();
 
-router.get("/mockingusers", createMockingUsers);
-router.get("/mockingpets", createMockingPets);
-router.post("/generateData", createDataOnDatabase)
+mocksRouter.get("/mockingpets", mockingController.createMockingPet);
+mocksRouter.get("/mockingusers", mockingController.createMockingUser);
 
-export default router;
+mocksRouter.post("/generateData", mockingController.generateData)
+
+export default mocksRouter;

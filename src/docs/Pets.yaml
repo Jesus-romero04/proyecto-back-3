@@ -1,0 +1,116 @@
+paths:
+  /api/pets/:
+    get:
+      summary: Obtiene todas las mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Mascotas obtenidas de la base de datos
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/Pet"
+
+        "404":
+          description: Obtencion de mascotas erronea
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  errorName:
+                    type: string
+                    example: NOT_FOUND
+                  message:
+                    type: string
+                    example: Mensaje del error
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              $ref: "#components/schema/error500"
+                # type: object
+                # properties:
+                #   status:
+                #     type: string
+                #     example: error
+                #   message:
+                #     type: string
+                #     example: Error interno del servidor
+                #   payload:
+                #     type: string
+                #     example: stack error || Error interno del servidor
+    post:
+      summary: Crea una mascota
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createPet'
+      responses:
+        "201":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload:
+                    $ref: "#components/schemas/Pet" 
+        "400":
+          description: Faltan datos || datos incorrectos
+          content:
+            application/json:
+              schema:     
+                $ref: "#components/schemas/error400"     
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/error500"
+  /api/pets/withimage/:
+    post:
+      summary: Carga una mascota con una imagen
+      tags:
+      - Pets
+  /api/pets/{pid}:
+    put:
+      summary: Edita una mascota
+      tags: 
+      - Pets
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID de la mascota solicitada
+        schema:
+          type: string
+      requestBodies:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createPet"
+    delete:
+      summary: Elimina una mascota
+      tags: 
+      - Pets
