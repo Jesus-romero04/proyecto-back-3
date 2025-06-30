@@ -16,11 +16,14 @@ export default class Users {
     }
 
     update = (id,doc) =>{
-        //throw new Error("Error forzado")
-        return userModel.findByIdAndUpdate(id,{$set:doc}, {new: true})
+        return userModel.findByIdAndUpdate(id,{$set:doc})
     }
 
     delete = (id) =>{
         return userModel.findByIdAndDelete(id);
+    }
+    // ✅ Nuevo método para obtener usuarios inactivos desde una fecha
+    getInactiveSince = async (date) => {
+        return userModel.find({ last_connection: { $lt: date } });
     }
 }

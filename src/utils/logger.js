@@ -1,31 +1,52 @@
-import winston from "winston"
+import winston from 'winston';
 
-let enviroment = "development";
+const customLevels = {
+  levels: {
+    fatal: 0,
+    error: 1,
+    warning: 2,
+    info: 3,
+    http: 4,
+    debug: 5
+  },
+  colors: {
+    fatal: 'magenta',
+    error: 'red',
+    warning: 'yellow',
+    info: 'cyan',
+    http: 'green',
+    debug: 'blue'
+  }
+};
 
-export const logger = winston.createLogger({
-    levels: {fatal: 0, error: 1, warn: 2, info: 3, http: 4, debug: 5},
-    transports: [
-        new winston.transports.Console({
-            level: enviroment === "development" ? "debug" : "info",
-            format: winston.format.combine(
-                winston.format.timestamp(),
-                winston.format.colorize({colors: {fatal: "red", error: "magenta", warn: "yellow", info: "blue", http: "cyan", debug: "grey"}}),
-                winston.format.simple()
-            )
-        }),
-        new winston.transports.File({
-            level: "error",
-            filename: "./src/logs/error.log",
-            format: winston.format.combine(
-                winston.format.timestamp(),
-                winston.format.simple()
-            )
-        })
-    ]
+winston.addColors(customLevels.colors);
+
+const devLogger = winston.createLogger({
+  levels: customLevels.levels,
+  transports: [
+    new winston.transports.Console({
+      level: 'debug',
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      )
+    })
+  ]
 });
 
-export const middLogg=(req, res, next)=>{
-    req.logger=logger
+const prodLogger = winston.createLogger({
+  levels: customLevels.levels,
+  transports: [
+    new winston.transports.File({ filename: 'errors.log', level: 'error' }),
+    new winston.transports.Console({ level: 'info' })
+  ]
+});
 
-    next()
-}
+Object.keys(customLevels.levels).forEach(level => {
+  devLogger[level] = (msg) => devLogger.log(level, msg);
+  prodLogger[level] = (msg) => prodLogger.log(level, msg);
+});
+
+export const getLogger = () => {
+  return process.env.NODE_ENV === 'production' ? prodLogger : devLogger;
+};

@@ -1,0 +1,36 @@
+tags:
+  - name: Adoptions
+    description: Operaciones relacionadas con adopciones
+
+paths:
+  /api/adoptions:
+    post:
+      summary: Registrar una adopción
+      tags: [Adoptions]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/AdoptionRequest'
+      responses:
+        201:
+          description: Adopción registrada con éxito
+        400:
+          description: Error en los datos enviados
+
+components:
+  requestBodies:
+    AdoptionRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        petId:
+          type: string
+      required:
+        - userId
+        - petId
+      example:
+        userId: "60a3d55e1b9e8c001c5c4c7a"
+        petId: "60a3d5601b9e8c001c5c4c7b"

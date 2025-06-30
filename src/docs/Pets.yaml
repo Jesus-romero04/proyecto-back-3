@@ -1,116 +1,50 @@
-paths:
-  /api/pets/:
-    get:
-      summary: Obtiene todas las mascotas
-      tags:
-        - Pets
-      responses:
-        "200":
-          description: Mascotas obtenidas de la base de datos
-          content: 
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status: 
-                    type: string
-                    example: success
-                  payload:
-                    type: array
-                    items:
-                      $ref: "#components/schemas/Pet"
+tags:
+  - name: Pets
+    description: Gestión de mascotas disponibles para adopción
 
-        "404":
-          description: Obtencion de mascotas erronea
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: error
-                  errorName:
-                    type: string
-                    example: NOT_FOUND
-                  message:
-                    type: string
-                    example: Mensaje del error
-        "500":
-          description: Error interno del servidor
-          content:
-            application/json:
-              $ref: "#components/schema/error500"
-                # type: object
-                # properties:
-                #   status:
-                #     type: string
-                #     example: error
-                #   message:
-                #     type: string
-                #     example: Error interno del servidor
-                #   payload:
-                #     type: string
-                #     example: stack error || Error interno del servidor
+paths:
+  /api/pets:
+    get:
+      summary: Obtener todas las mascotas
+      tags: [Pets]
+      responses:
+        200:
+          description: Lista de mascotas disponibles
+
     post:
-      summary: Crea una mascota
-      tags:
-        - Pets
+      summary: Crear una nueva mascota
+      tags: [Pets]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#components/requestBodies/createPet'
+              $ref: '#/components/requestBodies/NewPet'
       responses:
-        "201":
-          description: Usuario creado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status: 
-                    type: string
-                    example: success
-                  payload:
-                    $ref: "#components/schemas/Pet" 
-        "400":
-          description: Faltan datos || datos incorrectos
-          content:
-            application/json:
-              schema:     
-                $ref: "#components/schemas/error400"     
-        "500":
-          description: Error interno del servidor
-          content:
-            application/json:
-              schema:
-                $ref: "#components/schemas/error500"
-  /api/pets/withimage/:
-    post:
-      summary: Carga una mascota con una imagen
-      tags:
-      - Pets
-  /api/pets/{pid}:
-    put:
-      summary: Edita una mascota
-      tags: 
-      - Pets
-      parameters:
-      - name: pid
-        in: path
-        required: true
-        description: ID de la mascota solicitada
-        schema:
+        201:
+          description: Mascota creada
+        400:
+          description: Error al crear la mascota
+
+components:
+  requestBodies:
+    NewPet:
+      type: object
+      properties:
+        name:
           type: string
-      requestBodies:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#components/requestBodies/createPet"
-    delete:
-      summary: Elimina una mascota
-      tags: 
-      - Pets
+        specie:
+          type: string
+        age:
+          type: number
+        adopted:
+          type: boolean
+      required:
+        - name
+        - specie
+        - age
+      example:
+        name: Rocky
+        specie: Perro
+        age: 2
+        adopted: false

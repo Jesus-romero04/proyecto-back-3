@@ -9,4 +9,7 @@ router.get('/current',sessionsController.current);
 router.get('/unprotectedLogin',sessionsController.unprotectedLogin);
 router.get('/unprotectedCurrent',sessionsController.unprotectedCurrent);
 
+// ✅ NUEVA RUTA PARA LOGOUT (Clase 13)
+router.post('/logout', sessionsController.logout);
+
 export default router;
